@@ -19,5 +19,10 @@
             <call method="setRequest"><argument type="service" id="request" on-invalid="null" strict="false" /></call>
             <call method="setEntityManager"><argument type="service" id="doctrine.orm.entity_manager" /></call>
         </service>
+
+        <service id="vacatia.redirect" class="Vacatia\RedirectBundle\Services\Redirect">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="service_container" />
+        </service>
     </services>
 </container>
