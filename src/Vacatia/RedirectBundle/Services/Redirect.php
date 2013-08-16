@@ -5,7 +5,7 @@ namespace Vacatia\RedirectBundle\Services;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Vacatia\RedirectBundle\Entity\Redirect as Entity;
+use Vacatia\RedirectBundle\Entity\Redirect as RedirectEntity;
 
 class Redirect
 {
@@ -31,7 +31,7 @@ class Redirect
         $redirect = $this->em->getRepository('VacatiaRedirectBundle:Redirect')->findOneByOldUrl($newUrl);
 
         if (!$redirect) {
-            $redirect = new Entity;
+            $redirect = new RedirectEntity;
             $redirect->setOldUrl($oldUrl);
             $redirect->setNewUrl($newUrl);
 
