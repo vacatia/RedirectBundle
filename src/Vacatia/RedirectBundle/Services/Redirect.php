@@ -32,13 +32,12 @@ class Redirect
 
         if (!$redirect) {
             $redirect = new RedirectEntity;
-            $redirect->setOldUrl($oldUrl);
-            $redirect->setNewUrl($newUrl);
 
             $this->em->persist($redirect);
-        } else {
-            $redirect->setNewUrl($newUrl);
         }
+
+        $redirect->setOldUrl($oldUrl);
+        $redirect->setNewUrl($newUrl);
 
         if ($flush === true) {
             $this->em->flush();
