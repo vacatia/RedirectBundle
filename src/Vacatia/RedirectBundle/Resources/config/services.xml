@@ -4,20 +4,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="router_listener.class">Vacatia\RedirectBundle\Component\HttpKernel\EventListener\RouterListener</parameter>
-    </parameters>
-
     <services>
-        <!-- router listener -->
-        <service id="router_listener" class="%router_listener.class%">
-            <tag name="kernel.event_subscriber" />
-            <tag name="monolog.logger" channel="request" />
-            <argument type="service" id="router" />
-            <argument type="service" id="router.request_context" on-invalid="ignore" />
-            <argument type="service" id="logger" on-invalid="ignore" />
-            <call method="setRequest"><argument type="service" id="request" on-invalid="null" strict="false" /></call>
-            <call method="setEntityManager"><argument type="service" id="doctrine.orm.entity_manager" /></call>
+        <service id="vacatia.redirect_exception_listener" class="Vacatia\RedirectBundle\EventListener\RedirectExceptionListener">
+            <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
         <service id="vacatia.redirect" class="Vacatia\RedirectBundle\Services\Redirect">
