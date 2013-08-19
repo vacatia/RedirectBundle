@@ -1,29 +1,27 @@
 <?php
 
-namespace Vacatia\RedirectBundle\Component\HttpKernel\EventListener;
+namespace Vacatia\RedirectBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Symfony\Component\HttpKernel\EventListener\RouterListener as BaseRouterListener;
-
-class RouterListener extends BaseRouterListener
+class RedirectExceptionListener
 {
-    private $em;
+	private $em;
 
-    public function setEntityManager(EntityManager $em)
+    public function __construct(EntityManager $em)
     {
         $this->em = $em;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        try {
-            parent::onKernelRequest($event);
-        } catch(NotFoundHttpException $e) {
-            $request = $event->getRequest();
+        $request = $event->getRequest();
+        $exception = $event->getException();
+
+        if ($exception instanceof NotFoundHttpException) {
             $url = str_replace(array('https://', 'http://'), '', $request->getUri());
 
             // Do a lookup for a Redirect entity who's old_url matches that of this request
@@ -32,12 +30,7 @@ class RouterListener extends BaseRouterListener
             // If found, redirect to the new_url with the correct status code
             if ($redirect) {
                 $event->setResponse(new RedirectResponse($request->getScheme().'://'.$redirect->getNewUrl(), $redirect->getHttpStatusCode()));
-
-                return;
             }
-
-            // If not found, re-throw…
-            throw $e;
         }
     }
 }

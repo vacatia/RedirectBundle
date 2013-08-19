@@ -5,12 +5,14 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Daniel Polito",
-            "email": "contato@dbpolito.net"
+            "name": "Vacatia Community",
+            "homepage": "https://github.com/vacatia/RedirectBundle/graphs/contributors"
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "symfony/framework-bundle": "~2.1",
+        "doctrine/orm": "~2.1"
     },
     "autoload": {
         "psr-0": {
