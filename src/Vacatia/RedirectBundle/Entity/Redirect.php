@@ -44,10 +44,17 @@ class Redirect
     protected $httpStatusCode = 301;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_regex", type="boolean", options={"default" = 0})
+     */
+    private $isRegex = false;
+
+    /**
      * Set oldUrl
      *
      * @param string $oldUrl
-     * @return ShareSize
+     * @return Redirect
      */
     public function setOldUrl($oldUrl)
     {
@@ -70,7 +77,7 @@ class Redirect
      * Set newUrl
      *
      * @param string $newUrl
-     * @return ShareSize
+     * @return Redirect
      */
     public function setNewUrl($newUrl)
     {
@@ -93,7 +100,7 @@ class Redirect
      * Set httpStatusCode
      *
      * @param string $httpStatusCode
-     * @return ShareSize
+     * @return Redirect
      */
     public function setHttpStatusCode($httpStatusCode)
     {
@@ -110,5 +117,38 @@ class Redirect
     public function getHttpStatusCode()
     {
         return $this->httpStatusCode;
+    }
+
+    /**
+     * Set isRegex
+     *
+     * @param string $isRegex
+     * @return Redirect
+     */
+    public function setIsRegex($isRegex)
+    {
+        $this->isRegex = (bool) $isRegex;
+
+        return $this;
+    }
+
+    /**
+     * Get isRegex
+     *
+     * @return bool
+     */
+    public function getIsRegex()
+    {
+        return $this->isRegex;
+    }
+
+    /**
+     * Get isRegex
+     *
+     * @return bool
+     */
+    public function isRegex()
+    {
+        return $this->isRegex;
     }
 }

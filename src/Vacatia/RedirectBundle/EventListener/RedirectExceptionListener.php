@@ -30,6 +30,26 @@ class RedirectExceptionListener
             // If found, redirect to the new_url with the correct status code
             if ($redirect) {
                 $event->setResponse(new RedirectResponse($request->getScheme().'://'.$redirect->getNewUrl(), $redirect->getHttpStatusCode()));
+                return;
+            }
+
+            // If not found, try to match a regex rule
+            $redirects = $this->em->getRepository('VacatiaRedirectBundle:Redirect')->findByIsRegex(true);
+
+            foreach ($redirects as $redirect) {
+                $oldUrl = str_replace('/', '\/', $redirect->getOldUrl());
+
+                if (preg_match('/'.$oldUrl.'/', $url, $matches)) {
+                    $i = 0;
+                    $newUrl = $redirect->getNewUrl();
+
+                    foreach ($matches as $match) {
+                        $newUrl = str_replace('$'.$i++, $match, $newUrl);
+                    }
+
+                    $event->setResponse(new RedirectResponse($request->getScheme().'://'.$newUrl, $redirect->getHttpStatusCode()));
+                    return;
+                }
             }
         }
     }
