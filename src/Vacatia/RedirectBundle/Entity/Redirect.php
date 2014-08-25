@@ -49,6 +49,14 @@ class Redirect
      * @ORM\Column(name="is_regex", type="boolean", options={"default" = 0})
      */
     private $isRegex = false;
+    
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set oldUrl
