@@ -4,15 +4,24 @@ namespace Vacatia\RedirectBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Redirect
  *
  * @ORM\Entity
  * @ORM\Table(name="redirect", uniqueConstraints={@UniqueConstraint(name="old_url_unique", columns={"old_url"})})
+ * @UniqueEntity(fields={"oldUrl"}, message="That URL already exists.")
  */
 class Redirect
 {
+    const TYPE_VACATIA = 1;
+    const TYPE_VRBO = 2;
+    const TYPE_NAMES = array(
+        self::TYPE_VACATIA => 'Vacatia',
+        self::TYPE_VRBO => 'VRBO',
+    );
+
     /**
      * @var integer
      *
@@ -49,7 +58,14 @@ class Redirect
      * @ORM\Column(name="is_regex", type="boolean", options={"default" = 0})
      */
     private $isRegex = false;
-    
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="type", type="smallint", nullable=false, options={"default" = 1})
+     */
+    protected $type = 1;
+
     /**
      * @return int
      */
@@ -158,5 +174,23 @@ class Redirect
     public function isRegex()
     {
         return $this->isRegex;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }
