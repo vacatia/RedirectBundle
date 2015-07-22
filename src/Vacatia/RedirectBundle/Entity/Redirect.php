@@ -10,7 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * Redirect
  *
  * @ORM\Entity
- * @ORM\Table(name="redirect")
+ * @ORM\Table(name="redirect", uniqueConstraints={@UniqueConstraint(name="old_url_unique", columns={"old_url"})})
  * @UniqueEntity(fields={"oldUrl"}, message="That URL already exists.")
  */
 class Redirect
